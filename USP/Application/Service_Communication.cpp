@@ -16,7 +16,8 @@
 **/
 /* Includes ------------------------------------------------------------------*/
 #include "Service_Communication.h"
-#include "App_Game.h"
+#include "Service_Devices.h"
+#include "ros_connect.h"
 
 /* Private define ------------------------------------------------------------*/
 void Task_UsartRecieve(void *arg);
@@ -59,8 +60,11 @@ void Task_UsartRecieve(void *arg)
 			switch(Usart_RxCOB.port_num)
 			{
 				case 1: 
-					if(CTRL_MODE == SINGLE_MODE) xQueueSend(Ctrl_Port, Usart_RxCOB.address, 0);
-					else if(CTRL_MODE == DOUBLE_MODE) xQueueSend(Role1_Port, Usart_RxCOB.address, 0);
+					// 数据解包
+					UnpackJointsStates((uint8_t*)Usart_RxCOB.address, js_mp, JOINTS_NUM);
+				
+					// 数据发送给机械臂
+					xTaskNotifyGive(Manipulator_Handle);
 					break;
 				default: break;
 			}

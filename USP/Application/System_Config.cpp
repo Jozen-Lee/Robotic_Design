@@ -30,22 +30,12 @@
 #include "Service_Communication.h"
 
 /* Application */
-#include "App_Interface.h"
-#include "App_Game.h"
-#include "App_Drawing.h"
 
 /* User support package & SRML */
 #include <SRML.h>
-#include "text.h"
-#include "lcd.h"
-#include "oled.h"
-#include "touch.h"
-#include "flash.h"
 #include "ps2.h"
 
 /* Private variables ---------------------------------------------------------*/
-uint8_t trans[5] = {1, 2, 3, 4, 5};
-uint8_t rev[80];
 /*Founctions------------------------------------------------------------------*/
 /**
 * @brief Load drivers ,modules, and data resources for tasks.
@@ -60,29 +50,12 @@ void System_Resource_Init(void)
   
   /* RTOS resources Init --------------*/
   USART_RxPort    = xQueueCreate(4,sizeof(USART_COB));
-	Action_Port 		= xQueueCreate(1,1);
-	Ctrl_Port 			= xQueueCreate(1,1);
-	Role1_Port 			= xQueueCreate(2,1);
-	Role2_Port 			= xQueueCreate(2,1);
 	
   /* Other resources Init -------------*/
-	// 字库初始化
-	Text_Init();
-	
-	// 外部FLASH
-	flash.Init(W25Q256, FLASH_CS_GPIO_Port, FLASH_CS_Pin);
 
 	// PS2
 	ps2.Init();
 	
-	// OLED
-	OLED_Init();
-	
-	// LCD
-	LCD_Init();
-	TP_Init();
-	
-	// 
   /* Service configurations -----------*/
 	System_Tasks_Init();
 }  
@@ -97,10 +70,8 @@ void System_Tasks_Init(void)
 //  Service_Debug_Init();
   Service_Devices_Init();
   Service_Communication_Init();
-//	
-//  /* Applications Init ----------------*/
-	App_Interface_Init();
-	App_Games_Init();
+	
+  /* Applications Init ----------------*/
 
 }
 

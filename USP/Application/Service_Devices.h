@@ -18,6 +18,8 @@
 extern uint8_t (*touch_func)(void);
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
+extern TaskHandle_t Manipulator_Handle;  
+
 #ifdef  __cplusplus
 
 #endif
@@ -28,7 +30,7 @@ extern "C"{
 
 /* Exported function declarations --------------------------------------------*/
 void Service_Devices_Init(void);
-  
+
 #ifdef  __cplusplus
 }
 #endif
